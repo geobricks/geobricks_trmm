@@ -3,6 +3,7 @@
    "label": {
       "en": "Geobricks TRMM"
    },
+   "language": "Python",
    "description": "TRMM plug-in for Geobricks downloader.",
    "license": "GPL2",
    "homepage": "http://geobricks.org/",
