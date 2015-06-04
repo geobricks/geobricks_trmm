@@ -58,7 +58,7 @@ def list_days(year, month):
         ftp.login()
         ftp.cwd(conf['source']['ftp']['data_dir'])
         ftp.cwd(str(year))
-        ftp.cwd(str(month))
+        ftp.cwd(month)
         l = ftp.nlst()
         l.sort()
         out = []
@@ -75,11 +75,15 @@ def list_layers(year, month, day):
     @param month: e.g. '02'
     @return: An array of code/label/extensions objects.
     """
+    month = month if type(month) is str else str(month)
+    month = month if len(month) == 2 else '0' + month
+    day = day if type(day) is str else str(day)
+    day = day if len(day) == 2 else '0' + day
     if conf['source']['type'] == 'FTP':
         ftp = FTP(conf['source']['ftp']['base_url'])
         ftp.login()
         ftp.cwd(conf['source']['ftp']['data_dir'])
-        ftp.cwd(year)
+        ftp.cwd(str(year))
         ftp.cwd(month)
         ftp.cwd(day)
         l = ftp.nlst()
@@ -88,17 +92,13 @@ def list_layers(year, month, day):
         out = []
         for layer in fao_layers:
             if '.7.' in layer or '.7A.' in layer:
-                try:
-                    code = layer
-                    hour = layer[0:layer.index('.tif')].split('.')[2]
-                    label = layer[0:layer.index('.tif')].split('.')[0]
-                    label += ' ('
-                    label += '-'.join([year, month, day])
-                    label += ', ' + hour + ')'
-                    out.append({'code': code, 'label': label, 'extensions': ['.tif', '.tfw']})
-                except Exception, e:
-                    print e
-                    pass
+                code = layer
+                hour = layer[0:layer.index('.tif')].split('.')[2]
+                label = layer[0:layer.index('.tif')].split('.')[0]
+                label += ' ('
+                label += '-'.join([str(year), month, day])
+                label += ', ' + hour + ')'
+                out.append({'code': code, 'label': label, 'extensions': ['.tif', '.tfw']})
         ftp.quit()
         return out
 
