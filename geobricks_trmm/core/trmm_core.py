@@ -18,7 +18,7 @@ def list_years():
             try:
                 int(s)
                 out.append({'code': s, 'label': s})
-            except ValueError, e:
+            except ValueError:
                 pass
         ftp.quit()
         return out
@@ -112,6 +112,13 @@ def list_layers_subset(year, month, from_day, to_day):
     @to_day: e.g. 05
     @return: An array of code/label/extensions objects.
     """
+    year = str(year)
+    month = month if type(month) is str else str(month)
+    month = month if len(month) == 2 else '0' + month
+    from_day = from_day if type(from_day) is str else str(from_day)
+    from_day = from_day if len(from_day) == 2 else '0' + from_day
+    to_day = to_day if type(to_day) is str else str(to_day)
+    to_day = from_day if len(to_day) == 2 else '0' + to_day
     file_path_root = 'ftp://' + conf['source']['ftp']['base_url'] + conf['source']['ftp']['data_dir']
     days = map(lambda x: str(x) if x > 9 else '0'+str(x), range(int(from_day), 1+int(to_day)))
     out = []
@@ -162,6 +169,9 @@ def list_layers_month_subset(year, month):
     @param month: e.g. '02'
     @return: An array of code/label/extensions objects.
     """
+    year = str(year)
+    month = month if type(month) is str else str(month)
+    month = month if len(month) == 2 else '0' + month
     file_path_root = 'ftp://' + conf['source']['ftp']['base_url'] + conf['source']['ftp']['data_dir']
     out = []
     if conf['source']['type'] == 'FTP':
