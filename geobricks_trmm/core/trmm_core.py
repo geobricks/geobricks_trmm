@@ -18,7 +18,7 @@ def list_years():
             try:
                 int(s)
                 out.append({'code': s, 'label': s})
-            except:
+            except ValueError:
                 pass
         ftp.quit()
         return out
@@ -28,13 +28,14 @@ def list_months(year):
     """
     List all the available months.
     @param year: e.g. '2010'
+    @type year: str | int
     @return: An array of code/label objects.
     """
     if conf['source']['type'] == 'FTP':
         ftp = FTP(conf['source']['ftp']['base_url'])
         ftp.login()
         ftp.cwd(conf['source']['ftp']['data_dir'])
-        ftp.cwd(year)
+        ftp.cwd(str(year))
         l = ftp.nlst()
         l.sort()
         out = []
@@ -48,14 +49,18 @@ def list_days(year, month):
     """
     List all the available days.
     @param year: e.g. '2010'
+    @type year: str | int
     @param month: e.g. '02'
+    @type month: str | int
     @return: An array of code/label objects.
     """
+    month = month if type(month) is str else str(month)
+    month = month if len(month) == 2 else '0' + month
     if conf['source']['type'] == 'FTP':
         ftp = FTP(conf['source']['ftp']['base_url'])
         ftp.login()
         ftp.cwd(conf['source']['ftp']['data_dir'])
-        ftp.cwd(year)
+        ftp.cwd(str(year))
         ftp.cwd(month)
         l = ftp.nlst()
         l.sort()
@@ -70,14 +75,22 @@ def list_layers(year, month, day):
     """
     List all the available layers for a given year and month.
     @param year: e.g. '2010'
+    @type year: str | int
     @param month: e.g. '02'
+    @type month: str | int
+    @param day: e.g. '02'
+    @type day: str | int
     @return: An array of code/label/extensions objects.
     """
+    month = month if type(month) is str else str(month)
+    month = month if len(month) == 2 else '0' + month
+    day = day if type(day) is str else str(day)
+    day = day if len(day) == 2 else '0' + day
     if conf['source']['type'] == 'FTP':
         ftp = FTP(conf['source']['ftp']['base_url'])
         ftp.login()
         ftp.cwd(conf['source']['ftp']['data_dir'])
-        ftp.cwd(year)
+        ftp.cwd(str(year))
         ftp.cwd(month)
         ftp.cwd(day)
         l = ftp.nlst()
@@ -86,16 +99,13 @@ def list_layers(year, month, day):
         out = []
         for layer in fao_layers:
             if '.7.' in layer or '.7A.' in layer:
-                try:
-                    code = layer
-                    hour = layer[0:layer.index('.tif')].split('.')[2]
-                    label = layer[0:layer.index('.tif')].split('.')[0]
-                    label += ' ('
-                    label += '-'.join([year, month, day])
-                    label += ', ' + hour + ')'
-                    out.append({'code': code, 'label': label, 'extensions': ['.tif', '.tfw']})
-                except:
-                    pass
+                code = layer
+                hour = layer[0:layer.index('.tif')].split('.')[2]
+                label = layer[0:layer.index('.tif')].split('.')[0]
+                label += ' ('
+                label += '-'.join([str(year), month, day])
+                label += ', ' + hour + ')'
+                out.append({'code': code, 'label': label, 'extensions': ['.tif', '.tfw']})
         ftp.quit()
         return out
 
@@ -104,11 +114,22 @@ def list_layers_subset(year, month, from_day, to_day):
     """
     List all the available layers for a given year and month.
     @param year: e.g. '2010'
+    @type year: str | int
     @param month: e.g. '02'
+    @type month: str | int
     @from_day: e.g. 01
+    @type from_day: str | int
     @to_day: e.g. 05
+    @type to_day: str | int
     @return: An array of code/label/extensions objects.
     """
+    year = str(year)
+    month = month if type(month) is str else str(month)
+    month = month if len(month) == 2 else '0' + month
+    from_day = from_day if type(from_day) is str else str(from_day)
+    from_day = from_day if len(from_day) == 2 else '0' + from_day
+    to_day = to_day if type(to_day) is str else str(to_day)
+    to_day = from_day if len(to_day) == 2 else '0' + to_day
     file_path_root = 'ftp://' + conf['source']['ftp']['base_url'] + conf['source']['ftp']['data_dir']
     days = map(lambda x: str(x) if x > 9 else '0'+str(x), range(int(from_day), 1+int(to_day)))
     out = []
@@ -156,9 +177,14 @@ def list_layers_month_subset(year, month):
     """
     List all the available layers for a given year and month.
     @param year: e.g. '2010'
+    @type year: str | int
     @param month: e.g. '02'
+    @type month: str | int
     @return: An array of code/label/extensions objects.
     """
+    year = str(year)
+    month = month if type(month) is str else str(month)
+    month = month if len(month) == 2 else '0' + month
     file_path_root = 'ftp://' + conf['source']['ftp']['base_url'] + conf['source']['ftp']['data_dir']
     out = []
     if conf['source']['type'] == 'FTP':
