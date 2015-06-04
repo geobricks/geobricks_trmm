@@ -18,7 +18,7 @@ def list_years():
             try:
                 int(s)
                 out.append({'code': s, 'label': s})
-            except:
+            except ValueError, e:
                 pass
         ftp.quit()
         return out
@@ -34,7 +34,7 @@ def list_months(year):
         ftp = FTP(conf['source']['ftp']['base_url'])
         ftp.login()
         ftp.cwd(conf['source']['ftp']['data_dir'])
-        ftp.cwd(year)
+        ftp.cwd(str(year))
         l = ftp.nlst()
         l.sort()
         out = []
@@ -94,7 +94,8 @@ def list_layers(year, month, day):
                     label += '-'.join([year, month, day])
                     label += ', ' + hour + ')'
                     out.append({'code': code, 'label': label, 'extensions': ['.tif', '.tfw']})
-                except:
+                except Exception, e:
+                    print e
                     pass
         ftp.quit()
         return out
