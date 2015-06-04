@@ -31,3 +31,8 @@ class GeobricksTrmmRestTest(unittest.TestCase):
         response = self.tester.get('/trmm/2014/2/', content_type='application/json')
         out = json.loads(response.data)
         self.assertEquals(len(out), 28)
+
+    def test_list_layers(self):
+        response = self.tester.get('/trmm/2014/2/8/', content_type='application/json')
+        out = json.loads(response.data)
+        self.assertEquals(len(out), 8)
