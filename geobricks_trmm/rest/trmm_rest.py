@@ -4,7 +4,6 @@ from flask import Response
 from flask.ext.cors import cross_origin
 from geobricks_trmm.core import trmm_core as m
 
-
 trmm = Blueprint('trmm', __name__)
 
 
@@ -48,11 +47,4 @@ def list_days(year, month):
 @cross_origin(origins='*')
 def list_layers(year, month, day):
     out = m.list_layers(year, month, day)
-    return Response(json.dumps(out), content_type='application/json; charset=utf-8')
-
-
-@trmm.route('/list/year/<year>/month/<month>/')
-@cross_origin(origins='*')
-def list_layers_by_month(year, month):
-    out = m.list_layers_month_subset(year, month)
     return Response(json.dumps(out), content_type='application/json; charset=utf-8')
