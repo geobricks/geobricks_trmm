@@ -3,6 +3,7 @@ from flask import Blueprint
 from flask import Response
 from flask.ext.cors import cross_origin
 from geobricks_trmm.core import trmm_core as m
+from geobricks_trmm.resources.trmm_schema import schema
 
 trmm = Blueprint('trmm', __name__)
 
@@ -14,12 +15,7 @@ def discovery():
     Discovery service available for all Geobricks libraries that describes the plug-in.
     @return: Dictionary containing information about the service.
     """
-    out = {
-        'name': 'TRMM',
-        'description': 'Core functionalities and services for TRMM products.',
-        'type': 'DATASOURCE'
-    }
-    return Response(json.dumps(out), content_type='application/json; charset=utf-8')
+    return Response(json.dumps(schema), content_type='application/json; charset=utf-8')
 
 
 @trmm.route('/')

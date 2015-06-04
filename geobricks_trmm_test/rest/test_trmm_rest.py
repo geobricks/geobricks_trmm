@@ -14,8 +14,8 @@ class GeobricksTrmmRestTest(unittest.TestCase):
     def test_discovery(self):
         response = self.tester.get('/trmm/discovery/', content_type='application/json')
         out = json.loads(response.data)
-        self.assertEquals(out['name'], 'TRMM')
-        self.assertEquals(out['type'], 'DATASOURCE')
+        self.assertEquals(out['title'], 'TRMM')
+        self.assertEquals(out['properties']['type']['default'], 'DATASOURCE')
 
     def test_list_years(self):
         response = self.tester.get('/trmm/', content_type='application/json')
