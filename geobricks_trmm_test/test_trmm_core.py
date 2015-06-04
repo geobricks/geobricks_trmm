@@ -11,3 +11,8 @@ class GeobricksTrmmTest(unittest.TestCase):
     def test_list_months(self):
         out = c.list_months(2014)
         self.assertEqual(len(out), 12)
+
+
+    def test_list_days(self):
+        out = c.list_days(2014, 01)
+        self.assertEqual(len(out), 31)

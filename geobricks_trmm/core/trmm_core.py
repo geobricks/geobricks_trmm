@@ -51,12 +51,14 @@ def list_days(year, month):
     @param month: e.g. '02'
     @return: An array of code/label objects.
     """
+    month = month if type(month) is str else str(month)
+    month = month if len(month) == 2 else '0' + month
     if conf['source']['type'] == 'FTP':
         ftp = FTP(conf['source']['ftp']['base_url'])
         ftp.login()
         ftp.cwd(conf['source']['ftp']['data_dir'])
-        ftp.cwd(year)
-        ftp.cwd(month)
+        ftp.cwd(str(year))
+        ftp.cwd(str(month))
         l = ftp.nlst()
         l.sort()
         out = []
