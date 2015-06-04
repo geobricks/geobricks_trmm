@@ -28,6 +28,7 @@ def list_months(year):
     """
     List all the available months.
     @param year: e.g. '2010'
+    @type year: str | int
     @return: An array of code/label objects.
     """
     if conf['source']['type'] == 'FTP':
@@ -48,7 +49,9 @@ def list_days(year, month):
     """
     List all the available days.
     @param year: e.g. '2010'
+    @type year: str | int
     @param month: e.g. '02'
+    @type month: str | int
     @return: An array of code/label objects.
     """
     month = month if type(month) is str else str(month)
@@ -72,7 +75,11 @@ def list_layers(year, month, day):
     """
     List all the available layers for a given year and month.
     @param year: e.g. '2010'
+    @type year: str | int
     @param month: e.g. '02'
+    @type month: str | int
+    @param day: e.g. '02'
+    @type day: str | int
     @return: An array of code/label/extensions objects.
     """
     month = month if type(month) is str else str(month)
@@ -107,9 +114,13 @@ def list_layers_subset(year, month, from_day, to_day):
     """
     List all the available layers for a given year and month.
     @param year: e.g. '2010'
+    @type year: str | int
     @param month: e.g. '02'
+    @type month: str | int
     @from_day: e.g. 01
+    @type from_day: str | int
     @to_day: e.g. 05
+    @type to_day: str | int
     @return: An array of code/label/extensions objects.
     """
     year = str(year)
@@ -166,7 +177,9 @@ def list_layers_month_subset(year, month):
     """
     List all the available layers for a given year and month.
     @param year: e.g. '2010'
+    @type year: str | int
     @param month: e.g. '02'
+    @type month: str | int
     @return: An array of code/label/extensions objects.
     """
     year = str(year)

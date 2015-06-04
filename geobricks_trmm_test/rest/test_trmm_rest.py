@@ -1,5 +1,5 @@
-import unittest
 import json
+import unittest
 from flask import Flask
 from geobricks_trmm.rest.trmm_rest import trmm
 
