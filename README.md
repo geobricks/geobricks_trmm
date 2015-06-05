@@ -3,4 +3,4 @@
 Geobricks TRMM
 ==============
 
-TRMM plug-in for Geobricks downloader. 
+TRMM plug-in for Geobricks downloader. With automated tests. 
