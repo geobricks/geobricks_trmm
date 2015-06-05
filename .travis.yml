@@ -4,4 +4,5 @@ python:
 install:
   - "pip install -r requirements.txt"
 script:
-  - nosetests -v geobricks_modis_test/rest/test_modis_rest.py
+  - nosetests -v geobricks_trmm_test/core/test_trmm_core.py
+  - nosetests -v geobricks_trmm_test/rest/test_trmm_rest.py
