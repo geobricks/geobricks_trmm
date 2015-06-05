@@ -68,7 +68,7 @@ schema = {
         }
     },
     "properties": {
-        "type": {
+        "service_type": {
             "type": "string",
             "title": "Type",
             "description": "REST service type.",
