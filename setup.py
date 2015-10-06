@@ -11,7 +11,7 @@ setup(
     long_description=open('README.md').read(),
     description='TRMM plug-in for Geobricks downloader.',
     install_requires=[
-        'flask'
+        'watchdog', 'flask', 'flask-cors'
     ],
     url='http://pypi.python.org/pypi/GeobricksTRMM/'
 )

@@ -15,7 +15,7 @@ class GeobricksTrmmRestTest(unittest.TestCase):
         response = self.tester.get('/trmm/discovery/', content_type='application/json')
         out = json.loads(response.data)
         self.assertEquals(out['title'], 'TRMM')
-        self.assertEquals(out['properties']['type']['default'], 'DATASOURCE')
+        self.assertEquals(out['properties']['service_type']['default'], 'DATASOURCE')
 
     def test_list_years(self):
         response = self.tester.get('/trmm/', content_type='application/json')
@@ -35,5 +35,4 @@ class GeobricksTrmmRestTest(unittest.TestCase):
     def test_list_layers(self):
         response = self.tester.get('/trmm/2014/2/8/', content_type='application/json')
         out = json.loads(response.data)
-        print out[0]
         self.assertEquals(len(out), 8)

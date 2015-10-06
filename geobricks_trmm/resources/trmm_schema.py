@@ -2,7 +2,7 @@ schema = {
     "$schema": "http://json-schema.org/draft-04/schema#",
     "type": "object",
     "title": "TRMM",
-    "description": "TRMM plug-in for Geobricks downloader.",
+    "description": "Tropical Rainfall Measuring Mission.",
     "definitions": {
         "href": {
             "title": "Endpoint",
@@ -68,7 +68,7 @@ schema = {
         }
     },
     "properties": {
-        "type": {
+        "service_type": {
             "type": "string",
             "title": "Type",
             "description": "REST service type.",
