@@ -1,17 +1,18 @@
 from ftplib import FTP
-from geobricks_trmm.config.trmm_config import config as conf
+from server.geobricks_trmm.config.trmm_config import config as conf
 
 
-def list_years():
+def list_years(username, password):
     """
     List all the available years.
     @return: An array of code/label objects.
     """
     if conf['source']['type'] == 'FTP':
         ftp = FTP(conf['source']['ftp']['base_url'])
-        ftp.login()
+        ftp.login(username, password)
         ftp.cwd(conf['source']['ftp']['data_dir'])
         l = ftp.nlst()
+        ftp.quit()
         l.sort(reverse=True)
         out = []
         for s in l:
@@ -20,11 +21,9 @@ def list_years():
                 out.append({'code': s, 'label': s})
             except ValueError:
                 pass
-        ftp.quit()
         return out
 
-
-def list_months(year):
+def list_months(username, password, year):
     """
     List all the available months.
     @param year: e.g. '2010'
@@ -33,19 +32,19 @@ def list_months(year):
     """
     if conf['source']['type'] == 'FTP':
         ftp = FTP(conf['source']['ftp']['base_url'])
-        ftp.login()
+        ftp.login(username, password)
         ftp.cwd(conf['source']['ftp']['data_dir'])
         ftp.cwd(str(year))
         l = ftp.nlst()
+        ftp.quit()
         l.sort()
         out = []
         for s in l:
             out.append({'code': s, 'label': s})
-        ftp.quit()
         return out
 
 
-def list_days(year, month):
+def list_days(username, password, year, month):
     """
     List all the available days.
     @param year: e.g. '2010'
@@ -58,20 +57,20 @@ def list_days(year, month):
     month = month if len(month) == 2 else '0' + month
     if conf['source']['type'] == 'FTP':
         ftp = FTP(conf['source']['ftp']['base_url'])
-        ftp.login()
+        ftp.login(username, password)
         ftp.cwd(conf['source']['ftp']['data_dir'])
         ftp.cwd(str(year))
         ftp.cwd(month)
         l = ftp.nlst()
+        ftp.quit()
         l.sort()
         out = []
         for s in l:
             out.append({'code': s, 'label': s})
-        ftp.quit()
         return out
 
 
-def list_layers(year, month, day):
+def list_layers(username, password, year, month, day):
     """
     List all the available layers for a given year and month.
     @param year: e.g. '2010'
@@ -88,12 +87,13 @@ def list_layers(year, month, day):
     day = day if len(day) == 2 else '0' + day
     if conf['source']['type'] == 'FTP':
         ftp = FTP(conf['source']['ftp']['base_url'])
-        ftp.login()
+        ftp.login(username, password)
         ftp.cwd(conf['source']['ftp']['data_dir'])
         ftp.cwd(str(year))
         ftp.cwd(month)
         ftp.cwd(day)
         l = ftp.nlst()
+        ftp.quit()
         l.sort()
         fao_layers = filter(lambda x: '.tif' in x, l)
         out = []
@@ -106,11 +106,10 @@ def list_layers(year, month, day):
                 label += '-'.join([str(year), month, day])
                 label += ', ' + hour + ')'
                 out.append({'code': code, 'label': label, 'extensions': ['.tif', '.tfw']})
-        ftp.quit()
         return out
 
 
-def list_layers_subset(year, month, from_day, to_day):
+def list_layers_subset(username, password, year, month, from_day, to_day):
     """
     List all the available layers for a given year and month.
     @param year: e.g. '2010'
@@ -135,7 +134,7 @@ def list_layers_subset(year, month, from_day, to_day):
     out = []
     if conf['source']['type'] == 'FTP':
         ftp = FTP(conf['source']['ftp']['base_url'])
-        ftp.login()
+        ftp.login(username, password)
         ftp.cwd(conf['source']['ftp']['data_dir'])
         ftp.cwd(year)
         ftp.cwd(month)
@@ -173,7 +172,7 @@ def list_layers_subset(year, month, from_day, to_day):
         return out
 
 
-def list_layers_month_subset(year, month):
+def list_layers_month_subset(username, password, year, month):
     """
     List all the available layers for a given year and month.
     @param year: e.g. '2010'
@@ -189,7 +188,7 @@ def list_layers_month_subset(year, month):
     out = []
     if conf['source']['type'] == 'FTP':
         ftp = FTP(conf['source']['ftp']['base_url'])
-        ftp.login()
+        ftp.login(username, password)
         ftp.cwd(conf['source']['ftp']['data_dir'])
         ftp.cwd(year)
         ftp.cwd(month)

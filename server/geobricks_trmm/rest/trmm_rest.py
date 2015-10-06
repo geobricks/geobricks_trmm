@@ -2,8 +2,8 @@ import json
 from flask import Blueprint
 from flask import Response
 from flask.ext.cors import cross_origin
-from geobricks_trmm.core import trmm_core as m
-from geobricks_trmm.resources.trmm_schema import schema
+from server.geobricks_trmm.core import trmm_core as m
+from server.geobricks_trmm.resources.trmm_schema import schema
 
 trmm = Blueprint('trmm', __name__)
 

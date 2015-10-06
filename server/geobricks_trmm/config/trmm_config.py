@@ -3,8 +3,8 @@ config = {
     "source": {
         "type": "FTP",
         "ftp": {
-            "base_url": "trmmopen.gsfc.nasa.gov",
-            "data_dir": "/trmmdata/GIS/"
+            "base_url": "arthurhou.pps.eosdis.nasa.gov",
+            "data_dir": "/pub/trmmdata/GIS/"
         }
     },
     "processing": [

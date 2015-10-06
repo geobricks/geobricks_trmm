@@ -1,7 +1,7 @@
 import json
 import unittest
 from flask import Flask
-from geobricks_trmm.rest.trmm_rest import trmm
+from server.geobricks_trmm.rest.trmm_rest import trmm
 
 
 class GeobricksTrmmRestTest(unittest.TestCase):
