@@ -57,7 +57,7 @@
      <string>Username</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit">
+   <widget class="QLineEdit" name="username">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -83,7 +83,7 @@
      <string>Password</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_2">
+   <widget class="QLineEdit" name="password">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -130,7 +130,7 @@
      <string>Data Frequency</string>
     </property>
    </widget>
-   <widget class="QComboBox" name="comboBox">
+   <widget class="QComboBox" name="frequency">
     <property name="geometry">
      <rect>
       <x>7</x>
@@ -163,7 +163,7 @@
      <string>From Date</string>
     </property>
    </widget>
-   <widget class="QDateEdit" name="dateEdit">
+   <widget class="QDateEdit" name="from_date">
     <property name="geometry">
      <rect>
       <x>8</x>
@@ -217,7 +217,7 @@
      <string>To Date</string>
     </property>
    </widget>
-   <widget class="QDateEdit" name="dateEdit_2">
+   <widget class="QDateEdit" name="to_date">
     <property name="geometry">
      <rect>
       <x>8</x>
@@ -261,7 +261,7 @@
      <string>Geographic Area</string>
     </property>
    </widget>
-   <widget class="QComboBox" name="comboBox_2">
+   <widget class="QComboBox" name="country">
     <property name="geometry">
      <rect>
       <x>7</x>
@@ -307,7 +307,7 @@
      <string>Download Path</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_3">
+   <widget class="QLineEdit" name="download_path">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -330,7 +330,7 @@
      <string>...</string>
     </property>
    </widget>
-   <widget class="QCheckBox" name="checkBox">
+   <widget class="QCheckBox" name="open_in_qgis">
     <property name="geometry">
      <rect>
       <x>10</x>

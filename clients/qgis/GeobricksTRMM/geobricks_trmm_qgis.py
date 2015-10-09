@@ -22,6 +22,7 @@
 """
 from PyQt4.QtCore import QSettings, QTranslator, qVersion, QCoreApplication
 from PyQt4.QtGui import QAction, QIcon
+from qgis.core import QgsMessageLog
 # Initialize Qt resources from file resources.py
 import resources
 # Import the code for the dialog
@@ -189,4 +190,24 @@ class GeobricksTRMM:
         if result:
             # Do something useful here - delete the line containing pass and
             # substitute with your code.
-            pass
+            username = self.dlg.username.text()
+            password = self.dlg.password.text()
+            country = self.dlg.country.currentText()
+            from_date = self.dlg.from_date.date().toPyDate()
+            to_date = self.dlg.to_date.date().toPyDate()
+            download_path = self.dlg.download_path.text()
+            open_in_qgis = self.dlg.open_in_qgis.isChecked()
+            QgsMessageLog.logMessage('****************************************************************************************************', 'Geobricks TRMM')
+            QgsMessageLog.logMessage('Hallo, World!', 'Geobricks TRMM')
+            QgsMessageLog.logMessage('username: ' + str(username), 'Geobricks TRMM')
+            QgsMessageLog.logMessage('password: ' + str(password), 'Geobricks TRMM')
+            QgsMessageLog.logMessage('country: ' + str(country), 'Geobricks TRMM')
+            QgsMessageLog.logMessage('from_date.year: ' + str(from_date.year), 'Geobricks TRMM')
+            QgsMessageLog.logMessage('from_date.month: ' + str(from_date.month), 'Geobricks TRMM')
+            QgsMessageLog.logMessage('from_date.day: ' + str(from_date.day), 'Geobricks TRMM')
+            QgsMessageLog.logMessage('to_date.year: ' + str(to_date.year), 'Geobricks TRMM')
+            QgsMessageLog.logMessage('to_date.month: ' + str(to_date.month), 'Geobricks TRMM')
+            QgsMessageLog.logMessage('to_date.day: ' + str(to_date.day), 'Geobricks TRMM')
+            QgsMessageLog.logMessage('download_path: ' + str(download_path), 'Geobricks TRMM')
+            QgsMessageLog.logMessage('open_in_qgis: ' + str(open_in_qgis), 'Geobricks TRMM')
+            QgsMessageLog.logMessage('****************************************************************************************************', 'Geobricks TRMM')
