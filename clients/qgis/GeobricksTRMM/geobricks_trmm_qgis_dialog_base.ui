@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>390</width>
-    <height>470</height>
+    <height>480</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,7 +16,7 @@
   <widget class="QDialogButtonBox" name="button_box">
    <property name="geometry">
     <rect>
-     <x>220</x>
+     <x>216</x>
      <y>435</y>
      <width>171</width>
      <height>32</height>
@@ -38,7 +38,7 @@
      <x>10</x>
      <y>10</y>
      <width>370</width>
-     <height>111</height>
+     <height>131</height>
     </rect>
    </property>
    <property name="title">
@@ -66,6 +66,9 @@
       <height>21</height>
      </rect>
     </property>
+    <property name="text">
+     <string>guido.barbaglia@gmail.com</string>
+    </property>
     <property name="placeholderText">
      <string/>
     </property>
@@ -92,6 +95,9 @@
       <height>21</height>
      </rect>
     </property>
+    <property name="text">
+     <string>guido.barbaglia@gmail.com</string>
+    </property>
     <property name="echoMode">
      <enum>QLineEdit::Password</enum>
     </property>
@@ -99,12 +105,119 @@
      <string extracomment="TRMM FTP Password"/>
     </property>
    </widget>
+   <widget class="QLabel" name="label_8">
+    <property name="geometry">
+     <rect>
+      <x>190</x>
+      <y>108</y>
+      <width>51</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="cursor">
+     <cursorShape>PointingHandCursor</cursorShape>
+    </property>
+    <property name="text">
+     <string>Sign in</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_9">
+    <property name="geometry">
+     <rect>
+      <x>250</x>
+      <y>108</y>
+      <width>111</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Forgot Password?</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_10">
+    <property name="geometry">
+     <rect>
+      <x>240</x>
+      <y>108</y>
+      <width>16</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>|</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QGroupBox" name="groupBox_3">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>353</y>
+     <width>370</width>
+     <height>71</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Download Options</string>
+   </property>
+   <widget class="QLabel" name="label_6">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>26</y>
+      <width>151</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Download Path</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="download_path">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>40</y>
+      <width>302</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>311</x>
+      <y>40</y>
+      <width>50</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>...</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="open_in_qgis">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>140</y>
+      <width>321</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Open in QGIS when the download is complete</string>
+    </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
+   </widget>
   </widget>
   <widget class="QGroupBox" name="groupBox_2">
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>123</y>
+     <y>143</y>
      <width>370</width>
      <height>208</height>
     </rect>
@@ -184,7 +297,7 @@
     </property>
     <property name="maximumDate">
      <date>
-      <year>2015</year>
+      <year>2055</year>
       <month>10</month>
       <day>5</day>
      </date>
@@ -228,7 +341,7 @@
     </property>
     <property name="maximumDate">
      <date>
-      <year>7915</year>
+      <year>7955</year>
       <month>10</month>
       <day>5</day>
      </date>
@@ -280,71 +393,6 @@
       <string>Afghanistan</string>
      </property>
     </item>
-   </widget>
-  </widget>
-  <widget class="QGroupBox" name="groupBox_3">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>333</y>
-     <width>370</width>
-     <height>101</height>
-    </rect>
-   </property>
-   <property name="title">
-    <string>Download Options</string>
-   </property>
-   <widget class="QLabel" name="label_6">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>26</y>
-      <width>151</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Download Path</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="download_path">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>40</y>
-      <width>302</width>
-      <height>20</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton">
-    <property name="geometry">
-     <rect>
-      <x>311</x>
-      <y>40</y>
-      <width>50</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>...</string>
-    </property>
-   </widget>
-   <widget class="QCheckBox" name="open_in_qgis">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>70</y>
-      <width>321</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Open in QGIS when the download is complete</string>
-    </property>
-    <property name="checked">
-     <bool>true</bool>
-    </property>
    </widget>
   </widget>
  </widget>

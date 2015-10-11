@@ -20,11 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 """
+import datetime
+import os.path
 from PyQt4.QtCore import QSettings, QTranslator, qVersion, QCoreApplication
-from PyQt4.QtGui import QAction, QIcon
+from PyQt4.QtGui import QAction, QIcon, QFileDialog, QProgressBar, QDialogButtonBox, QSizePolicy, QGridLayout
 from qgis.core import QgsMessageLog
+from qgis.gui import QgsMessageBar
+from ftplib import FTP
+from config.trmm_config import config as conf
+
 # Initialize Qt resources from file resources.py
-import resources
 # Import the code for the dialog
 from geobricks_trmm_qgis_dialog import GeobricksTRMMDialog
 import os.path
@@ -69,6 +74,14 @@ class GeobricksTRMM:
         self.toolbar = self.iface.addToolBar(u'GeobricksTRMM')
         self.toolbar.setObjectName(u'GeobricksTRMM')
 
+        self.dlg.download_path.clear()
+        self.dlg.pushButton.clicked.connect(self.select_output_file)
+
+
+    def select_output_file(self):
+        filename = QFileDialog.getExistingDirectory(self.dlg, "Select Directory")
+        self.dlg.download_path.setText(filename)
+
     # noinspection PyMethodMayBeStatic
     def tr(self, message):
         """Get the translation for a string using Qt translation API.
@@ -84,18 +97,17 @@ class GeobricksTRMM:
         # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
         return QCoreApplication.translate('GeobricksTRMM', message)
 
-
     def add_action(
-        self,
-        icon_path,
-        text,
-        callback,
-        enabled_flag=True,
-        add_to_menu=True,
-        add_to_toolbar=True,
-        status_tip=None,
-        whats_this=None,
-        parent=None):
+            self,
+            icon_path,
+            text,
+            callback,
+            enabled_flag=True,
+            add_to_menu=True,
+            add_to_toolbar=True,
+            status_tip=None,
+            whats_this=None,
+            parent=None):
         """Add a toolbar icon to the toolbar.
 
         :param icon_path: Path to the icon for this action. Can be a resource
@@ -168,7 +180,6 @@ class GeobricksTRMM:
             callback=self.run,
             parent=self.iface.mainWindow())
 
-
     def unload(self):
         """Removes the plugin menu item and icon from QGIS GUI."""
         for action in self.actions:
@@ -179,13 +190,19 @@ class GeobricksTRMM:
         # remove the toolbar
         del self.toolbar
 
-
     def run(self):
-        """Run method that performs all the real work"""
-        # show the dialog
+
+        # Show the dialog
         self.dlg.show()
+
+        # Set yesterday's date
+        yesterday = datetime.date.fromordinal(datetime.date.today().toordinal()-180)
+        self.dlg.from_date.setDate(yesterday)
+        self.dlg.to_date.setDate(yesterday)
+
         # Run the dialog event loop
         result = self.dlg.exec_()
+
         # See if OK was pressed
         if result:
             # Do something useful here - delete the line containing pass and
@@ -197,7 +214,9 @@ class GeobricksTRMM:
             to_date = self.dlg.to_date.date().toPyDate()
             download_path = self.dlg.download_path.text()
             open_in_qgis = self.dlg.open_in_qgis.isChecked()
-            QgsMessageLog.logMessage('****************************************************************************************************', 'Geobricks TRMM')
+            QgsMessageLog.logMessage(
+                '****************************************************************************************************',
+                'Geobricks TRMM')
             QgsMessageLog.logMessage('Hallo, World!', 'Geobricks TRMM')
             QgsMessageLog.logMessage('username: ' + str(username), 'Geobricks TRMM')
             QgsMessageLog.logMessage('password: ' + str(password), 'Geobricks TRMM')
@@ -210,4 +229,53 @@ class GeobricksTRMM:
             QgsMessageLog.logMessage('to_date.day: ' + str(to_date.day), 'Geobricks TRMM')
             QgsMessageLog.logMessage('download_path: ' + str(download_path), 'Geobricks TRMM')
             QgsMessageLog.logMessage('open_in_qgis: ' + str(open_in_qgis), 'Geobricks TRMM')
-            QgsMessageLog.logMessage('****************************************************************************************************', 'Geobricks TRMM')
+            QgsMessageLog.logMessage(
+                '****************************************************************************************************',
+                'Geobricks TRMM')
+            QgsMessageLog.logMessage('TEST: ' + str(self.date_range(from_date, to_date)), 'Geobricks TRMM')
+            for current_date in self.date_range(from_date, to_date):
+                QgsMessageLog.logMessage('\tdate: ' + str(current_date), 'Geobricks TRMM')
+                layers = self.list_layers(username, password, current_date.year, current_date.month, current_date.day, download_path)
+                for l in layers:
+                    QgsMessageLog.logMessage('Add raster layer: ' + str(l), 'Geobricks TRMM')
+                    self.iface.addRasterLayer(l, str(l))
+
+    def list_layers(self, username, password, year, month, day, download_path):
+        month = month if type(month) is str else str(month)
+        month = month if len(month) == 2 else '0' + month
+        day = day if type(day) is str else str(day)
+        day = day if len(day) == 2 else '0' + day
+        QgsMessageLog.logMessage('list_layers: ' + str(year), 'Geobricks TRMM')
+        QgsMessageLog.logMessage('list_layers: ' + str(month), 'Geobricks TRMM')
+        QgsMessageLog.logMessage('list_layers: ' + str(day), 'Geobricks TRMM')
+        if conf['source']['type'] == 'FTP':
+            ftp = FTP(conf['source']['ftp']['base_url'])
+            ftp.login(username, password)
+            ftp.cwd(conf['source']['ftp']['data_dir'])
+            ftp.cwd(str(year))
+            ftp.cwd(month)
+            ftp.cwd(day)
+            l = ftp.nlst()
+            l.sort()
+            fao_layers = filter(lambda x: '.tif' in x, l)
+            out = []
+            for layer in fao_layers:
+                if '.7.' in layer or '.7A.' in layer:
+                    local_filename = os.path.join(download_path, layer)
+                    out.append(local_filename)
+                    if os.path.isfile(local_filename) is False:
+                        file = open(local_filename, 'wb+')
+                        ftp.retrbinary('RETR %s' % layer, file.write)
+                        QgsMessageLog.logMessage('list_layers: ' + str(layer), 'Geobricks TRMM')
+            ftp.quit()
+            return out
+
+    def date_range(self, start_date, end_date):
+        dates = []
+        delta = end_date - start_date
+        for i in range(delta.days + 1):
+            dates.append(start_date + datetime.timedelta(days=i))
+        return dates
+
+    def accept(self):
+        QgsMessageLog.logMessage('custom: ', 'Geobricks TRMM')
