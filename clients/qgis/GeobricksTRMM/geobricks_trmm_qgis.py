@@ -23,7 +23,7 @@
 import datetime
 import os.path
 from PyQt4.QtCore import QSettings, QTranslator, qVersion, QCoreApplication
-from PyQt4.QtGui import QAction, QIcon, QFileDialog, QProgressBar, QDialogButtonBox, QSizePolicy, QGridLayout
+from PyQt4.QtGui import QAction, QIcon, QFileDialog, QProgressBar, QDialogButtonBox, QSizePolicy, QGridLayout, QMessageBox
 from qgis.core import QgsMessageLog
 from qgis.gui import QgsMessageBar
 from ftplib import FTP
@@ -76,7 +76,6 @@ class GeobricksTRMM:
 
         self.dlg.download_path.clear()
         self.dlg.pushButton.clicked.connect(self.select_output_file)
-
 
     def select_output_file(self):
         filename = QFileDialog.getExistingDirectory(self.dlg, "Select Directory")
@@ -190,6 +189,42 @@ class GeobricksTRMM:
         # remove the toolbar
         del self.toolbar
 
+    def start(self):
+        username = self.dlg.username.text()
+        password = self.dlg.password.text()
+        country = self.dlg.country.currentText()
+        from_date = self.dlg.from_date.date().toPyDate()
+        to_date = self.dlg.to_date.date().toPyDate()
+        download_path = self.dlg.download_path.text()
+        open_in_qgis = self.dlg.open_in_qgis.isChecked()
+        QgsMessageLog.logMessage(
+            '****************************************************************************************************',
+            'Geobricks TRMM')
+        QgsMessageLog.logMessage('Hallo, World!', 'Geobricks TRMM')
+        QgsMessageLog.logMessage('username: ' + str(username), 'Geobricks TRMM')
+        QgsMessageLog.logMessage('password: ' + str(password), 'Geobricks TRMM')
+        QgsMessageLog.logMessage('country: ' + str(country), 'Geobricks TRMM')
+        QgsMessageLog.logMessage('from_date.year: ' + str(from_date.year), 'Geobricks TRMM')
+        QgsMessageLog.logMessage('from_date.month: ' + str(from_date.month), 'Geobricks TRMM')
+        QgsMessageLog.logMessage('from_date.day: ' + str(from_date.day), 'Geobricks TRMM')
+        QgsMessageLog.logMessage('to_date.year: ' + str(to_date.year), 'Geobricks TRMM')
+        QgsMessageLog.logMessage('to_date.month: ' + str(to_date.month), 'Geobricks TRMM')
+        QgsMessageLog.logMessage('to_date.day: ' + str(to_date.day), 'Geobricks TRMM')
+        QgsMessageLog.logMessage('download_path: ' + str(download_path), 'Geobricks TRMM')
+        QgsMessageLog.logMessage('open_in_qgis: ' + str(open_in_qgis), 'Geobricks TRMM')
+        QgsMessageLog.logMessage(
+            '****************************************************************************************************',
+            'Geobricks TRMM')
+        QgsMessageLog.logMessage('TEST: ' + str(self.date_range(from_date, to_date)), 'Geobricks TRMM')
+        for current_date in self.date_range(from_date, to_date):
+            QgsMessageLog.logMessage('\tdate: ' + str(current_date), 'Geobricks TRMM')
+            layers = self.list_layers(username, password, current_date.year, current_date.month, current_date.day, download_path)
+            if open_in_qgis is True:
+                for l in layers:
+                    QgsMessageLog.logMessage('Add raster layer: ' + str(l), 'Geobricks TRMM')
+                    self.iface.addRasterLayer(l, str(l))
+        QMessageBox.information(None, "INFO:", "Download complete")
+
     def run(self):
 
         # Show the dialog
@@ -200,45 +235,12 @@ class GeobricksTRMM:
         self.dlg.from_date.setDate(yesterday)
         self.dlg.to_date.setDate(yesterday)
 
-        # Run the dialog event loop
-        result = self.dlg.exec_()
+        # Link start button
+        self.dlg.start_button.clicked.connect(self.start)
+        # self.dlg.create_account_label.clicked.connect(self.create_account)
 
-        # See if OK was pressed
-        if result:
-            # Do something useful here - delete the line containing pass and
-            # substitute with your code.
-            username = self.dlg.username.text()
-            password = self.dlg.password.text()
-            country = self.dlg.country.currentText()
-            from_date = self.dlg.from_date.date().toPyDate()
-            to_date = self.dlg.to_date.date().toPyDate()
-            download_path = self.dlg.download_path.text()
-            open_in_qgis = self.dlg.open_in_qgis.isChecked()
-            QgsMessageLog.logMessage(
-                '****************************************************************************************************',
-                'Geobricks TRMM')
-            QgsMessageLog.logMessage('Hallo, World!', 'Geobricks TRMM')
-            QgsMessageLog.logMessage('username: ' + str(username), 'Geobricks TRMM')
-            QgsMessageLog.logMessage('password: ' + str(password), 'Geobricks TRMM')
-            QgsMessageLog.logMessage('country: ' + str(country), 'Geobricks TRMM')
-            QgsMessageLog.logMessage('from_date.year: ' + str(from_date.year), 'Geobricks TRMM')
-            QgsMessageLog.logMessage('from_date.month: ' + str(from_date.month), 'Geobricks TRMM')
-            QgsMessageLog.logMessage('from_date.day: ' + str(from_date.day), 'Geobricks TRMM')
-            QgsMessageLog.logMessage('to_date.year: ' + str(to_date.year), 'Geobricks TRMM')
-            QgsMessageLog.logMessage('to_date.month: ' + str(to_date.month), 'Geobricks TRMM')
-            QgsMessageLog.logMessage('to_date.day: ' + str(to_date.day), 'Geobricks TRMM')
-            QgsMessageLog.logMessage('download_path: ' + str(download_path), 'Geobricks TRMM')
-            QgsMessageLog.logMessage('open_in_qgis: ' + str(open_in_qgis), 'Geobricks TRMM')
-            QgsMessageLog.logMessage(
-                '****************************************************************************************************',
-                'Geobricks TRMM')
-            QgsMessageLog.logMessage('TEST: ' + str(self.date_range(from_date, to_date)), 'Geobricks TRMM')
-            for current_date in self.date_range(from_date, to_date):
-                QgsMessageLog.logMessage('\tdate: ' + str(current_date), 'Geobricks TRMM')
-                layers = self.list_layers(username, password, current_date.year, current_date.month, current_date.day, download_path)
-                for l in layers:
-                    QgsMessageLog.logMessage('Add raster layer: ' + str(l), 'Geobricks TRMM')
-                    self.iface.addRasterLayer(l, str(l))
+    def create_account(self):
+        QgsMessageLog.logMessage('create_account!', 'Geobricks TRMM')
 
     def list_layers(self, username, password, year, month, day, download_path):
         month = month if type(month) is str else str(month)
@@ -259,9 +261,14 @@ class GeobricksTRMM:
             l.sort()
             fao_layers = filter(lambda x: '.tif' in x, l)
             out = []
+            # Create final folder with year, month and day
+            final_folder = os.path.join(download_path, str(year), str(month), str(day))
+            if not os.path.exists(final_folder):
+                os.makedirs(final_folder)
+            # Download layers
             for layer in fao_layers:
                 if '.7.' in layer or '.7A.' in layer:
-                    local_filename = os.path.join(download_path, layer)
+                    local_filename = os.path.join(final_folder, layer)
                     out.append(local_filename)
                     if os.path.isfile(local_filename) is False:
                         file = open(local_filename, 'wb+')
